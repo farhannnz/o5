@@ -229,3 +229,13 @@ footer li a:hover { color: var(--copper); }
 .faq details p a { color: var(--copper); border-bottom: 1px solid var(--clay); }
 @media (max-width: 900px) { .benefits { grid-template-columns: 1fr 1fr; } .steps { grid-template-columns: 1fr 1fr; row-gap: 36px; } .step::after { display: none; } }
 @media (max-width: 560px) { .benefits, .steps { grid-template-columns: 1fr; } .faq summary { font-size: 22px; } }
+
+/* card photos */
+.card .cimg { margin: -48px -34px 26px; aspect-ratio: 4 / 3; overflow: hidden; }
+.card .cimg img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+.card:hover .cimg img { transform: scale(1.06); }
+.card .ico { width: 52px; height: 52px; margin-bottom: 16px; }
+.ben { overflow: hidden; }
+.ben .bimg { margin: -32px -28px 24px; aspect-ratio: 16 / 10; overflow: hidden; }
+.ben .bimg img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+.ben:hover .bimg img { transform: scale(1.06); }
