@@ -61,8 +61,7 @@ document.querySelectorAll("form[data-waitlist]").forEach((form) => {
       }
       form.reset();
       msg.className = "msg ok";
-      msg.textContent = "You're in! 🎉 We'll message you before opening day.";
-      confetti();
+      msg.textContent = "You're on the list. We'll message you before opening day.";
     } catch (err) {
       msg.className = "msg err";
       msg.textContent = "Something went wrong. Please try again or DM us on Instagram.";
@@ -71,20 +70,3 @@ document.querySelectorAll("form[data-waitlist]").forEach((form) => {
     btn.textContent = "Join the waiting list";
   });
 });
-
-// tiny confetti burst
-function confetti() {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const colors = ["#d9744a", "#f7e0a9", "#f3b896", "#c8d4b4", "#8b5a38", "#f6d5c8"];
-  for (let i = 0; i < 70; i++) {
-    const c = document.createElement("i");
-    c.className = "confetti";
-    c.style.left = Math.random() * 100 + "vw";
-    c.style.background = colors[i % colors.length];
-    c.style.setProperty("--dx", (Math.random() - 0.5) * 240 + "px");
-    c.style.setProperty("--r", Math.random() * 720 + "deg");
-    c.style.animationDelay = Math.random() * 0.4 + "s";
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 2600);
-  }
-}
