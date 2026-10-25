@@ -1,5 +1,8 @@
 // Paste your deployed Google Apps Script web-app URL here (see google-apps-script.gs)
-const SHEET_URL = "";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzot5dfEL1GHVSum2-Jh6yGXbKxFKBQJUGo9156XqjZbgqWdjTSBCPULCwd9OTiS1et/exec";
+// Email via FormSubmit: main inbox + CC
+const MAIL_TO = "Sukhanverma@gmail.com";
+const MAIL_CC = "krahit57@gmail.com";
 
 // nav
 const burger = document.querySelector(".burger");
@@ -32,7 +35,41 @@ if (cd) {
   setInterval(tick, 1000);
 }
 
-// waitlist form -> Google Sheet
+// Save one entry to the Google Sheet. Never throws.
+async function saveToSheet(data) {
+  if (!SHEET_URL) return false;
+  try {
+    await fetch(SHEET_URL, { method: "POST", mode: "no-cors", keepalive: true, body: new URLSearchParams(data) });
+    return true;
+  } catch (err) {
+    console.warn("Sheet save failed", err);
+    return false;
+  }
+}
+
+// Email one entry via FormSubmit. Never throws.
+async function sendMail(data) {
+  try {
+    const r = await fetch("https://formsubmit.co/ajax/" + MAIL_TO, {
+      method: "POST",
+      keepalive: true,
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        ...data,
+        _subject: "O5 Pilates waiting list: " + (data.name || "New entry"),
+        _cc: MAIL_CC,
+        _template: "table",
+        _captcha: "false",
+      }),
+    });
+    return r.ok;
+  } catch (err) {
+    console.warn("Mail send failed", err);
+    return false;
+  }
+}
+
+// waitlist form -> Google Sheet + email, each independent
 document.querySelectorAll("form[data-waitlist]").forEach((form) => {
   const msg = form.querySelector(".msg");
   const btn = form.querySelector("button");
@@ -50,15 +87,11 @@ document.querySelectorAll("form[data-waitlist]").forEach((form) => {
     f.append("page", location.pathname.split("/").pop() || "index.html");
     btn.disabled = true;
     btn.textContent = "Saving…";
+    const data = Object.fromEntries(f);
+    // Sheet and mail run on their own: one failing never stops the other.
+    const [sheetOk, mailOk] = await Promise.all([saveToSheet(data), sendMail(data)]);
     try {
-      if (SHEET_URL) {
-        await fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: new URLSearchParams(f) });
-      } else {
-        console.warn("SHEET_URL not set in js/main.js — entry kept in this browser only.");
-        const q = JSON.parse(localStorage.getItem("o5_waitlist") || "[]");
-        q.push(Object.fromEntries(f));
-        localStorage.setItem("o5_waitlist", JSON.stringify(q));
-      }
+      if (!sheetOk && !mailOk) throw new Error("not saved");
       form.reset();
       msg.className = "msg ok";
       msg.textContent = "You're on the list. We'll message you before opening day.";
