@@ -1,8 +1,7 @@
 // Paste your deployed Google Apps Script web-app URL here (see google-apps-script.gs)
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbzot5dfEL1GHVSum2-Jh6yGXbKxFKBQJUGo9156XqjZbgqWdjTSBCPULCwd9OTiS1et/exec";
-// Email via FormSubmit: main inbox + CC
-const MAIL_TO = "Sukhanverma@gmail.com";
-const MAIL_CC = "krahit57@gmail.com";
+// Email via FormSubmit
+const MAIL_TO = "krahit57@gmail.com";
 
 // nav
 const burger = document.querySelector(".burger");
@@ -57,7 +56,6 @@ async function sendMail(data) {
       body: JSON.stringify({
         ...data,
         _subject: "O5 Pilates waiting list: " + (data.name || "New entry"),
-        _cc: MAIL_CC,
         _template: "table",
         _captcha: "false",
       }),
