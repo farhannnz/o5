@@ -22,10 +22,10 @@ addEventListener("scroll", reveal, { passive: true });
 addEventListener("resize", reveal);
 reveal();
 
-// countdown to opening day (1 Nov 2026)
+// countdown to opening day (10 Nov 2026)
 const cd = document.getElementById("countdown");
 if (cd) {
-  const target = new Date("2026-11-01T00:00:00+05:30").getTime();
+  const target = new Date("2026-11-10T00:00:00+05:30").getTime();
   const tick = () => {
     const d = Math.max(0, target - Date.now());
     const v = [Math.floor(d / 864e5), Math.floor(d / 36e5) % 24, Math.floor(d / 6e4) % 60, Math.floor(d / 1e3) % 60];
