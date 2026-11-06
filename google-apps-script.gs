@@ -9,7 +9,7 @@
  */
 const SHEET_ID = "1Im7xs-4t_ZU5MOqe4OdGoBDcXDWDK_OrFBZXfNvvuDk";
 const SHEET_NAME = "Waitlist";
-const HEADERS = ["Timestamp", "Name", "WhatsApp", "Email", "Interested in", "Note", "Page"];
+const HEADERS = ["Timestamp", "Name", "WhatsApp", "Email", "Interested in", "Note", "Page", "Best time to call"];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -31,6 +31,7 @@ function doPost(e) {
       p.interest || "",
       p.note || "",
       p.page || "",
+      p.call_time || "",
     ]);
     return ContentService.createTextOutput("ok");
   } finally {

@@ -81,6 +81,11 @@ document.querySelectorAll("form[data-waitlist]").forEach((form) => {
       msg.textContent = "Please enter a valid 10-digit WhatsApp number.";
       return;
     }
+    if (!f.get("call_time")) {
+      msg.className = "msg err";
+      msg.textContent = "Please choose a time when we can call you.";
+      return;
+    }
     f.delete("website");
     f.append("page", location.pathname.split("/").pop() || "index.html");
     btn.disabled = true;
